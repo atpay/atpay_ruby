@@ -1,0 +1,72 @@
+ <!— begin @Pay button —>
+
+<style>
+  .ExternalClass table.reg_mailto {display:none; display: none !important;}
+
+  .ExternalClass table.out_mailto {display: table; display: table !important; font-size: 18px !important; width: auto !important; height: auto !important;}
+  .ExternalClass table.out_mailto  {font-family: Tahoma; color: #ffffff;  background-color:{{background_color}};}
+
+  .ExternalClass table.out_mailto td.dollar{vertical-align:top !important; padding-right:0px !important; font-size:24px !important;  padding-top:15px !important;  text-align:right !important; padding-bottom:10px !important; padding-left:10px;}
+
+  .ExternalClass table.out_mailto td.cents{vertical-align:top !important; font-size:12px !important; padding-left:1px !important; padding-right:10px !important;  padding-bottom:0px !important; padding-top:15px !important; text-align:left !important; text-decoration:underline !important;}
+
+  .ExternalClass table.out_mailto  td img {display: block !important; height: 32px !important; width: 39px !important;}
+
+  .ExternalClass table.out_mailto  td.cart{width:45px !important; padding-left:10px !important; height:39px !important; text-align:right}
+
+  .ExternalClass table.out_mailto a {display: inline !important; border: 0 !important; width:auto !important; text-decoration:none !important; color:{{foreground_color}} !important; line-height:auto !important;}
+</style>
+
+<center>
+    {% if analytic_url %}
+      <img src="{{analytic_url}}" width="1" height="1" />  
+    {% endif %}
+
+    <table class="reg_mailto" border='0' cellpadding='0' cellspacing='0' style='font-family: Tahoma; margin: 0 auto !important;  background-color:{{background_color}};'>
+      <tr>
+        {% if image %}
+          <td style="padding-left:10px; padding-right:0px; padding-top:14px; padding-bottom:10px;text-align:right;">
+             <a class="reg_mailto" href="{{url}}" target="_blank" style="border-width: 0px;">
+                <img src="{{image}}" style="display:block; border-width: 0px;" />
+             </a>
+          </td>
+        {% endif %}
+            <td style="vertical-align:top; padding-left:10px; padding-right:0px; font-size:24px;  padding-top:15px;  text-align:right; padding-bottom:10px;" valign="top">
+               <a class="reg_mailto" href="{{url}}" style="display: inline; width:auto;  border-width: 0px; line-height:auto; text-decoration:none; color: {{foreground_color}};" target="_blank">
+               {{dollar}}
+
+               </a>
+            </td>
+
+            <td class="cents" style="vertical-align:top; font-size:12px; padding-left:1px; padding-right:10px;  padding-bottom:0px; padding-top:15px; text-align:left; text-decoration:none;" valign="top">
+               <a class="reg_mailto" href="{{url}}" style="display: inline; border: 0 !important; width:auto; text-decoration:none !important; color:{{foreground_color}}; line-height:auto;"  valign="top" target="_blank">{{cents}}</a>
+            </td>
+
+      </tr>
+    </table>
+
+    <table class='out_mailto'  border='0' cellpadding='0' cellspacing='0' style='width:0; height:0; padding:0; margin:0; font-size:0;'>
+      <tr>
+        {% if image %}
+          <td class='cart'>
+              <a href='{{outlook_url}}' style='display:none; border-width: 0px;'  target="_blank">
+              <img src='{{image}}' style='margin: 0px; width:0px; height:0px;  border-width: 0px;'>
+              </a>
+          </td>
+        {% endif %}
+        <td class='dollar' style='width:0; height:0; padding:0; margin:0; font-size:0;' valign='top'>
+          <a href='{{outlook_url}}' style='display:none; border-width: 0px;'  target="_blank">
+            {{dollar}}
+          </a>
+        </td>
+        <td class='cents' style='width:0; height:0; padding:0; margin:0; font-size:0;' valign='top'>
+        <a href='{{outlook_url}}' style='display:none; border-width: 0px;'  target="_blank">
+          {{cents}}
+        </a>
+        </td>
+      </tr>
+    </table>
+</center>
+
+
+ <!— end @Pay button —>
