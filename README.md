@@ -11,7 +11,7 @@ There are two classes of **Token** @Pay processes - the **Invoice Token**, which
 be used for sending invoices or transactions applicable to a single
 recipient, and the **Bulk Token**, which is suitable for email marketing lists.
 
-A **Button** is a link embedded in an email message. When activated, this link
+An **Email Button** is a link embedded in an email message. When activated, this link
 opens a new outgoing email with a recipient, subject, and message body
 prefilled. By default this email contains one of the two token types. Clicking
 'Send' delivers the email to @Pay and triggers **Transaction** processing. The sender will
