@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'atpay'
+require 'thor'
+require 'pry'
+
+module AtPay
+  module CLI
+    class Token < Thor
+      class_option :private_key, desc: "Your @Pay private key"
+      class_option :public_key, desc: "Your @Pay public key"
+      class_option :partner_id, type: :numeric, desc: "Your @Pay partner ID"
+
+      desc 'invoice', 'Generate an invoice token'
+      option :amount, type: :numeric, required: true, desc: "Dollar amount to process"
+      option :email, type: :string, required: true, desc: "Email address expected to complete the transaction"
+      option :user_data, default: nil, desc: "Additional data to append to transaction details"
+      def invoice
+        puts AtPay::Token::Invoice.new(session, options[:amount], options[:email], options[:user_data]).to_s
+      end
+
+      desc 'bulk', 'Generate a bulk token'
+      option :amount, type: :numeric, required: true, desc: "Dollar amount to process"
+      option :user_data, default: '', desc: "Additional data to append to transaction details"
+      option :url, type: :string, required: true, desc: "URL for customers with no card on file to complete transaction"
+      def bulk
+        puts AtPay::Token::Bulk.new(session, options[:amount], options[:url], options[:user_data]).to_s
+      end
+
+      private
+      def session
+        AtPay::Session.new(options[:partner_id], options[:public_key], options[:private_key])
+      end
+    end
+
+    class Button < Thor
+      desc 'generic', 'Generates a button for a token'
+      option :amount, type: :numeric, required: true, desc: "Display amount"
+      option :merchant, type: :string, required: true, desc: "Merchant name"
+      def generic
+        token = $stdin.read
+        puts AtPay::Button.new(token, options[:amount], options[:merchant]).render
+      end
+    end
+
+    class Main < Thor
+      desc 'token [SUBCOMMAND ...ARGS]', 'Token generation functions'
+      subcommand 'token', Token
+
+      desc 'button [SUBCOMMAND ...ARGS]', 'Button generation functions'
+      subcommand 'button', Button
+    end
+  end
+end
+
+AtPay::CLI::Main.start(ARGV)
