@@ -63,14 +63,14 @@ module AtPay
         if target.is_a? EmailAddress
           "email<#{target.address}>"
         elsif target.is_a? Card
-          "card<#{card.token}>"
+          "card<#{target.token}>"
         else
           "url<#{self.url}>"
         end
       end
 
       def expires
-        expires_in_seconds || (Time.now.to_i + 3600 * 24 * 7)
+        Time.now.to_i + (expires_in_seconds || (3600 * 24 * 7))
       end
 
       def boxer

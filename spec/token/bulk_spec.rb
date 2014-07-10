@@ -16,13 +16,13 @@ describe AtPay::Token::Bulk do
 
   it 'creates a new token without exception' do
     token = AtPay::Token::Bulk.new(session, amount, url, user_data)
-    token.to_s
+    expect(token.to_s).to match(/\A@.*@\z/)
   end
 
   it 'sets the authorization only version' do
     token = AtPay::Token::Bulk.new(session, amount, url, user_data)
     token.auth_only!
-    token.to_s 
+    expect(token.to_s).to match(/\A@.*@\z/)
   end
 end
 
