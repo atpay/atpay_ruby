@@ -1,6 +1,8 @@
 # @Pay Ruby Bindings
 
-Ruby implementation of @Pay's *Token Protocol* and *Email Button* generation system.
+Ruby implementation of @Pay's [**Token Protocol**](http://developer.atpay.com/v3/tokens/protocol/)
+and **Email Button** generation system. See the [@Pay Developer Site](http://developer.atpay.com/)
+for additional information.
 
 A **Token** is a value that contains information about a financial transaction (an invoice
 or a product sales offer, for instance). When a **Token** is sent to
