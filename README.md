@@ -35,15 +35,14 @@ use Button that you can embed in outgoing emails. Run these commands with
 a `--help` flag to get more information on their usage.
 
 ```bash
-  $ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
-  => @...@
+$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
+=> @...@
 
-  $ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://example.com/product"
-  => @...@
+$ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://example.com/product"
+=> @...@
 
-  $ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | 
-      atpay button generic --amount=20.55 --merchant="Mom's"
-  => <p>...</p>
+$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
+=> <p>...</p>
 ```
 
 ## Configuration
@@ -53,9 +52,8 @@ your API credentials from `https://dashboard.atpay.com/` (API Settings) and plug
 them into a session creation:
 
 ```ruby
-  require 'atpay'
-
-  session = AtPay::Session.new(partner_id, public_key, private_key)
+require 'atpay'
+session = AtPay::Session.new(partner_id, public_key, private_key)
 ```
 
 ## Invoice Tokens
@@ -68,8 +66,8 @@ The following creates a token for a 20 dollar transaction specifically for the
 credit card @Pay has associated with 'test@example.com':
 
 ```ruby
-  token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
-  puts token.to_s
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+puts token.to_s
 ```
 
 ## Bulk Tokens
@@ -86,7 +84,7 @@ general marketing.
 To create a token for a 30 dollar blender:
 
 ```ruby
-  token = AtPay::Token::Bulk.new(session, 30.00, 'http://example.com/blender-30', 'blender-30')
+token = AtPay::Token::Bulk.new(session, 30.00, 'http://example.com/blender-30', 'blender-30')
 ```
 
 If a recipient of this token attempts to purchase the product via email but
@@ -104,10 +102,9 @@ simultaneously. If you're shipping a physical good, or for some other reason
 want to delay the capture, use the `auth_only!` method to adjust this behavior:
 
 ```ruby
-  token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
-  token.auth_only!
-
-  email(token.to_s)
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+token.auth_only!
+email(token.to_s)
 ```
 
 ### Expiration
@@ -117,9 +114,9 @@ after the expiration results in a polite error message being sent to the sender.
 To adjust the expiration:
 
 ```ruby
-  token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
-  token.expires_in_seconds = 60 * 60 * 24 * 7 # 1 week
-  email(token.to_s, receipient_address)
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+token.expires_in_seconds = 60 * 60 * 24 * 7 # 1 week
+email(token.to_s, receipient_address)
  ``` 
 
 ## Button Generation
@@ -127,10 +124,9 @@ To adjust the expiration:
 To create a friendly button that wraps your token:
 
 ```ruby
-  token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
-  button = AtPay::Button.new(token.to_s, 20.00, 'My Company', wrap: true).render
-
-  email(button, recipient_address)
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+button = AtPay::Button.new(token.to_s, 20.00, 'My Company', wrap: true).render
+email(button, recipient_address)
 ```
 
 Default options are [AtPay::Button::OPTIONS](lib/atpay/button.rb).
