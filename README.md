@@ -2,16 +2,16 @@
 
 A Ruby implementation of @Pay's Token protocol and button creation system.
 
-A *Token* is a value that contains information about a financial transaction (an invoice
-or a product sales offer, for instance). When this *Token* is sent to
+A **Token** is a value that contains information about a financial transaction (an invoice
+or a product sales offer, for instance). When this **Token** is sent to
 `transaction@processor.atpay.com` from an address associated with a credit
-card, it will create a *Transaction*.
+card, it will create a **Transaction**.
 
 There are two classes of Token @Pay processes - the Invoice Token, which should
 be used for sending invoices or transactions applicable to a single
 recipient, and Bulk Tokens, which are suitable for sending to email marketing lists.
 
-A *Button* is a link embedded in an email message. When activated, this link
+A **Button** is a link embedded in an email message. When activated, this link
 opens a new outgoing email with a recipient, subject, and message body
 prefilled. By default this email contains one of the two token types. Clicking
 'Send' delivers the email to @Pay and triggers transaction processing. The sender will
@@ -28,9 +28,9 @@ If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
 This SDK ships with two command line utilities - `atpay_button` and
 `atpay_token`.
 
-The `atpay_token` utility generates *Invoice* and *Bulk* *Tokens*, and the
+The `atpay_token` utility generates **Invoice** and **Bulk** **Tokens**, and the
 `atpay_button` utility can be used to wrap those tokens with a simple, easy to
-use *Button* that you can embed in outgoing emails. Run these commands with
+use **Button** that you can embed in outgoing emails. Run these commands with
 a `--help` flag to get more information on their usage.
 
 ```bash
@@ -46,7 +46,7 @@ $ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=tes
 
 ## Configuration
 
-All *Token* generation functions require a configured *Session* object. Just grab
+All **Token** generation functions require a configured **Session** object. Just grab
 your API credentials from `https://dashboard.atpay.com/` (API Settings):
 
 ```ruby
@@ -56,7 +56,7 @@ session = AtPay::Session.new(partner_id, public_key, private_key)
 
 ## Invoice Tokens
 
-An *Invoice* token is ideal for sending invoices or for transactions that are
+An **Invoice** token is ideal for sending invoices or for transactions that are
 only applicable to a single recipient (shopping cart abandonment, specialized
 offers, etc).
 
@@ -70,16 +70,16 @@ puts token.to_s
 
 ## Bulk Tokens
 
-Most merchants will be fine generating *Buttons* manually on the [@Pay Merchant
+Most merchants will be fine generating **Buttons** manually on the [@Pay Merchant
 Dashboard](https://dashboard.atpay.com), but for cases where you need to
-automate the generation of these messages, you can create *Bulk Tokens* without
+automate the generation of these messages, you can create **Bulk Tokens** without
 communicating directly with @Pay's servers.
 
-A *Bulk Token* is designed for large mailing lists. You can send the same token
+A **Bulk Token** is designed for large mailing lists. You can send the same token
 to any number of recipients. It's ideal for 'deal of the day' type offers, or
 general marketing.
 
-To create a *Bulk Token* for a 30 dollar blender:
+To create a **Bulk Token** for a 30 dollar blender:
 
 ```ruby
 token = AtPay::Token::Bulk.new(session, 30.00, 'http://example.com/blender-30', 'blender-30')
@@ -95,7 +95,7 @@ a two-click email transaction in the future.
 
 ### Auth Only
 
-A *Token* will trigger a funds authorization and a funds capture
+A **Token** will trigger a funds authorization and a funds capture
 simultaneously. If you're shipping a physical good, or for some other reason
 want to delay the capture, use the `auth_only!` method to adjust this behavior:
 
@@ -107,7 +107,7 @@ email(token.to_s)
 
 ### Expiration
 
-A *Token* expires in 2 weeks unless otherwise specified. Trying to use the *Token*
+A **Token** expires in 2 weeks unless otherwise specified. Trying to use the **Token**
 after the expiration results in a polite error message being sent to the sender.
 To adjust the expiration:
 
