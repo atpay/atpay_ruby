@@ -35,6 +35,9 @@ require 'atpay'
 session = AtPay::Session.new(partner_id, public_key, private_key)
 ```
 
+The **Session** is thread-safe and read-only. You can safely use a single instance from 
+a configuration initializer.
+
 ## Invoice Tokens
 
 An **Invoice** token is ideal for sending invoices or for transactions that are
