@@ -25,22 +25,6 @@ receive a receipt or further instructions.
 
 If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
 
-## Command Line Usage
-
-The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
-that you can embed in outgoing email. Run `atpay help` for more details. 
-
-```bash
-$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
-=> @...@
-
-$ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://example.com/product"
-=> @...@
-
-$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
-=> <p>...</p>
-```
-
 ## Configuration
 
 All **Token** generation functions require a **Session** object. Just grab
@@ -125,3 +109,20 @@ email(button, recipient_address)
 ```
 
 Default options are [AtPay::Button::OPTIONS](lib/atpay/button.rb).
+
+
+## Command Line Usage
+
+The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
+that you can embed in outgoing email. Run `atpay help` for more details. 
+
+```bash
+$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
+=> @...@
+
+$ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://example.com/product"
+=> @...@
+
+$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
+=> <p>...</p>
+```
