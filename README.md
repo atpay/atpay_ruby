@@ -27,13 +27,8 @@ If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
 
 ## Command Line Usage
 
-This SDK ships with two command line utilities - `atpay_button` and
-`atpay_token`.
-
-The `atpay_token` utility generates **Invoice Tokens** and **Bulk Tokens**, and the
-`atpay_button` utility can be used to wrap those tokens with a simple, easy to
-use **Email Button** that you can embed in outgoing emails. Run these commands with
-a `--help` flag to get more information on their usage.
+The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
+that you can embed in outgoing email. Run `atpay help` for more details. 
 
 ```bash
 $ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
