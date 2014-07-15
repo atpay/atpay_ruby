@@ -13,8 +13,8 @@ If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
 
 ## Configuration
 
-All **Token** generation functions require a **Session** object. Just grab
-your API credentials from `https://dashboard.atpay.com/` (API Settings):
+You'll need a **Session** object configured iwth your API credentials from
+from `https://dashboard.atpay.com/` (API Settings):
 
 ```ruby
 require 'atpay'
