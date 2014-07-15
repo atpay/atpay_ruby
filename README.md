@@ -1,8 +1,58 @@
 # @Pay Ruby Bindings
 
-Ruby implementation of @Pay's [**Token Protocol**](http://developer.atpay.com/v3/tokens/protocol/)
-and **Email Button** generation system. See the [@Pay Developer Site](http://developer.atpay.com/)
+@Pay API bindings for Ruby and a full implementation of @Pay's 
+[**Token Protocol**](http://developer.atpay.com/v3/tokens/protocol/) and **Email Button** 
+generation system. See the [@Pay Developer Site](http://developer.atpay.com/)
 for additional information.
+
+## Installation
+
+  `gem install atpay_ruby`
+
+If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
+
+## Configuration
+
+All **Token** generation functions require a **Session** object. Just grab
+your API credentials from `https://dashboard.atpay.com/` (API Settings):
+
+```ruby
+require 'atpay'
+ATPAY_SESSION = AtPay::Session.new(partner_id, public_key, private_key)
+```
+
+The **Session** is thread-safe and read-only. You can safely use a single instance from 
+a configuration initializer.
+
+## Web Hook Verification
+
+Configure **Web Hooks** on the [@Pay Merchant Dashboard](https://dashboard.atpay.com)
+under "API Settings." Use the **Hook** class to parse incoming requests and
+verify the **Hook Request Signature**. Requests with an invalid signature should
+be discarded.
+
+`params` is expected to contain the two url-encoded POST variables sent to your 
+**Web Hook Endpoint** from @Pay's servers. See the [Web Hook Developer
+Documentation](http://developer.atpay.com/v3/hooks/) for additional information.
+
+A sample Rails **Web Hook Endpoint**:
+
+```ruby
+# app/controllers/transactions_controller.rb
+class TransactionsController < ApplicationController
+  def create
+    hook = AtPay::Hook(ATPAY_SESSION, params)
+    render text: hook.details.inspect
+  rescue AtPay::InvalidSignatureError
+    head 403
+  end
+end
+
+# config/routes.rb
+resources :transactions, only: [:create]
+```
+
+## Token Overview
 
 A **Token** is a value that contains information about a financial transaction (an invoice
 or a product sales offer, for instance). When a **Token** is sent to
@@ -18,25 +68,6 @@ opens a new outgoing email with a recipient, subject, and message body
 prefilled. By default this email contains one of the two token types. Clicking
 'Send' delivers the email to @Pay and triggers **Transaction** processing. The sender will
 receive a receipt or further instructions.
-
-## Installation
-
-  `gem install atpay_ruby`
-
-If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
-
-## Configuration
-
-All **Token** generation functions require a **Session** object. Just grab
-your API credentials from `https://dashboard.atpay.com/` (API Settings):
-
-```ruby
-require 'atpay'
-session = AtPay::Session.new(partner_id, public_key, private_key)
-```
-
-The **Session** is thread-safe and read-only. You can safely use a single instance from 
-a configuration initializer.
 
 ## Invoice Tokens
 
