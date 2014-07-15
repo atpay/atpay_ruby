@@ -1,9 +1,11 @@
 $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 require 'atpay/session'
+require 'atpay/error'
 require 'atpay/button'
 require 'atpay/token/invoice'
 require 'atpay/token/bulk'
+require 'atpay/hook'
 require 'atpay/railtie' if defined?(Rails)
 require 'base64'
 
