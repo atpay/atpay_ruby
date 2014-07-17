@@ -13,7 +13,7 @@ If you're using Bundler, you can add `atpay_ruby` to your application's Gemfile.
 
 ## Configuration
 
-You'll need a **Session** object configured iwth your API credentials from
+You'll need a **Session** object configured with your API credentials from
 from `https://dashboard.atpay.com/` (API Settings):
 
 ```ruby
