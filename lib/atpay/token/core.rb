@@ -42,6 +42,28 @@ module AtPay
         self.user_data.fulfillment = days
       end
 
+      def collect_address=(address)
+        if address == "shipping_only"
+          self.user_data = "ship"
+        elsif address == "billing_and_shipping"
+          self.user_data = "both"
+        else
+          self.user_data == address
+        end
+      end
+
+      def custom_user_data=(str)
+        self.user_data.custom_user_data = str
+      end
+
+      def set_item_details=(item_details)
+        self.user_data.item_details = item_details
+      end
+
+      def set_item_quantity=(qty)
+        self.user_data.quantity = qty
+      end
+
       def request_custom_data!(name, options={})
         self.user_data.custom_fields ||= []
         self.user_data.custom_fields << { name: name, required: !!options[:required] }
