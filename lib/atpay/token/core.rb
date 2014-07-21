@@ -43,7 +43,6 @@ module AtPay
       end
 
       def request_custom_data!(name, options={})
-        fail 'Custom Signup Pages must implement their own field customization' if self.user_data.url
         self.user_data.custom_fields ||= []
         self.user_data.custom_fields << { name: name, required: !!options[:required] }
       end
