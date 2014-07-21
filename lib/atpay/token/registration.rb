@@ -3,6 +3,11 @@ require 'httpi'
 module AtPay
   module Token
     class Registration < Struct.new(:session, :token)
+      def initialize(*args)
+        super(*args)
+        registration  # The registration should occur even if we don't access a url or id
+      end
+
       def url
         registration['url']
       end
