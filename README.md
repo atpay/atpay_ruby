@@ -97,14 +97,13 @@ general marketing.
 To create a **Bulk Token** for a 30 dollar blender:
 
 ```ruby
-token = AtPay::Token::Bulk.new(session, 30.00, 'http://example.com/blender-30', 'blender-30')
+token = AtPay::Token::Bulk.new(session, 30.00, 'blender-30')
 ```
 
 If a recipient of this token attempts to purchase the product via email but
 hasn't configured a credit card, they'll receive a message asking them to
-complete their transaction at http://example.com/blender-30. You should
-integrate the @Pay JS SDK on that page if you want to allow them to create
-a two-click email transaction in the future.
+complete their transaction. You should integrate [@PayJS](http://developer.atpay.com/v3/javascript/)
+on that page to enable Customers' two-click email transactions in the future.
 
 ## General Token Attributes
 
@@ -115,7 +114,7 @@ simultaneously. If you're shipping a physical good, or for some other reason
 want to delay the capture, use the `auth_only!` method to adjust this behavior:
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'invoice-123')
 token.auth_only!
 email(token.to_s)
 ```
@@ -129,8 +128,66 @@ To adjust the expiration:
 ```ruby
 token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
 token.expires_in_seconds = 60 * 60 * 24 * 7 # 1 week
+ ```
+
+### Signup Page
+
+When a new Customer or a Customer with expired or invalid credit card details
+attempts to purchase from an Email, they will be redirected to a Token's **Payment Capture Page**,
+where they can enter new Credit Card details. By default @Pay will host the
+**Payment Capture Page**, but you may wish to direct the Customer to a product page on
+your own site (Enable @Pay Card tokenization on your own page with the
+[@PayJS](http://developer.atpay.com/v3/javascript/)). To specify a custom
+URL:
+
+```ruby
+token     = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'invoice-123')
+token.url = 'https://example.com/invoices/123'
+```
+
+#### Requesting Custom Information on a Hosted Signup Page
+
+If you opt to use the **Hosted Payment Capture Page** (by not specifying a URL above), you
+can request further information from your Customer during the purchase on the
+Web. For instance, the following requests an optional Gift Message:
+
+```ruby
+token     = AtPay::Token::Bulk.new(session, 20.00, 'bulk-123')
+token.request_custom_data!('gift_message', required: false)
+```
+
+#### Requesting the URL of a Hosted Signup Page
+
+The **Hosted Payment Capture Page** is related directly to a Token. It is
+created when the token is first received at `transaction@processor.atpay.com` or
+when the URL is requested from @Pay prior to the first use. To request the URL, you
+must contact @Pay's server:
+
+```ruby
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'invoice-123')
+registration = token.register!
+
+registration.url
+=> "https://example.secured.atpay.com/{token_identifier}"
+
+registration.short
+=> "atpay://{token_identifier}"
+```
+
+NOTE: For high traffic this solution may be inadequate. Contact @Pay for
+consultation.
+
+### Fulfillment Time
+
+**Transaction Details** from @Pay may include an **Estimated Fulfillment Time**.
+@Pay expects **Auth Only** transactions when fulfillment is required.
+A Transaction should be Captured only when fulfillment is completed.
+
+```ruby
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com', 'sku-123')
+token.estimated_fulfillment_days = 3      # The token is now auth-only!
 email(token.to_s, receipient_address)
- ``` 
+```
 
 ## Button Generation
 
@@ -144,11 +201,10 @@ email(button, recipient_address)
 
 Default options are [AtPay::Button::OPTIONS](lib/atpay/button.rb).
 
-
 ## Command Line Usage
 
 The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
-that you can embed in outgoing email. Run `atpay help` for more details. 
+that you can embed in outgoing email. Run `atpay help` for more details.
 
 ```bash
 $ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123

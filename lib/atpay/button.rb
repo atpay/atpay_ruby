@@ -26,6 +26,10 @@ module AtPay
       @options[:image] = nil if @options[:image] == ''
     end
 
+    def default_mailto
+      "mailto:#{@options[:processor]}?subject=#{mailto_subject}&body=#{mailto_body}"
+    end
+
     def render(args={})
       @options.update args
 
@@ -75,10 +79,6 @@ module AtPay
 
     def outlook_mailto
       "https://www.hotmail.com/secure/start?action=compose&to=#{@options[:processor]}&subject=#{mailto_subject}&body=#{mailto_body}"
-    end
-
-    def default_mailto
-      "mailto:#{@options[:processor]}?subject=#{mailto_subject}&body=#{mailto_body}"
     end
 
     # Load the mailto body template from the specified location

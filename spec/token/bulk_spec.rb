@@ -15,12 +15,12 @@ describe AtPay::Token::Bulk do
   let(:user_data) { 'sku-123' }
 
   it 'creates a new token without exception' do
-    token = AtPay::Token::Bulk.new(session, amount, url, user_data)
+    token = AtPay::Token::Bulk.new(session, amount, user_data)
     expect(token.to_s).to match(/\A@.*@\z/)
   end
 
   it 'sets the authorization only version' do
-    token = AtPay::Token::Bulk.new(session, amount, url, user_data)
+    token = AtPay::Token::Bulk.new(session, amount, user_data)
     token.auth_only!
     expect(token.to_s).to match(/\A@.*@\z/)
   end

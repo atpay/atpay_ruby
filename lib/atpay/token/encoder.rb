@@ -7,7 +7,7 @@ require 'atpay/card'
 
 module AtPay
   module Token
-    class Encoder < Struct.new(:session, :version, :amount, :target, :expires_in_seconds, :url, :user_data)
+    class Encoder < Struct.new(:session, :version, :amount, :target, :expires, :url, :user_data, :group)
       def email
         version_and_encode(nonce, partner_frame, body_frame) 
       end
@@ -56,7 +56,7 @@ module AtPay
       end
 
       def options_group
-        SecureRandom.hex(5)
+        ":#{group || SecureRandom.hex(5)}"
       end
 
       def target_tag
@@ -69,12 +69,8 @@ module AtPay
         end
       end
 
-      def expires
-        Time.now.to_i + (expires_in_seconds || (3600 * 24 * 7))
-      end
-
       def boxer
-        RbNaCl::Box.new(AtPay::PUBLIC_KEY, Base64.decode64(session.private_key))
+        RbNaCl::Box.new(session.atpay_public_key, Base64.decode64(session.private_key))
       end
 
       def nonce

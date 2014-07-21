@@ -1,4 +1,5 @@
 require 'openssl'
+require 'multi_json'
 
 module AtPay
   class Hook
