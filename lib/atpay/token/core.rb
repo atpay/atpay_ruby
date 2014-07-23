@@ -20,6 +20,16 @@ module AtPay
         self.user_data          = OpenStruct.new
       end
 
+      def email_address
+        if @email_address.is_a? String
+          email_address = EmailAddress.new
+          email_address.address = @email_address
+          email_address
+        else
+          @email_address
+        end 
+      end
+
       def name=(name)
         self.user_data.name = name
       end

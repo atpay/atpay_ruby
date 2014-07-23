@@ -58,6 +58,12 @@ describe AtPay::Token::Encoder do
       expect(token.email).to eq('@Y2JhAAAAAAAAAAFlbWFpbDx0ZXN0QGV4YW1wbGUuY29tPjphYmMvQaAAAAAJOoAvc2t1LTEyMw==@')
       expect(token.site(ip, headers)).to eq('@Y2JhAAAAAAAAAAEAAAAoNzliZGUyNjg1MmFmNDFiMjliZTdkMzQ2ZjBlZGMyNjEyNTdlZWFiOAAAAAsxNzIuMTYuMC4xNWVtYWlsPHRlc3RAZXhhbXBsZS5jb20-OmFiYy9BoAAAAAk6gC9za3UtMTIz@')
     end
+
+    it 'generates a valid one-to-one token when given an email address as a string' do
+      token = AtPay::Token::Encoder.new(session, version, amount, 'test@example.com', expires_in_seconds, url, user_data)
+      expect(token.email).to eq('@Y2JhAAAAAAAAAAF1cmw8aHR0cDovL2V4YW1wbGUuY29tLz46YWJjL0GgAAAACTqAL3NrdS0xMjM=@')
+      expect(token.site(ip, headers)).to eq('@Y2JhAAAAAAAAAAEAAAAoNzliZGUyNjg1MmFmNDFiMjliZTdkMzQ2ZjBlZGMyNjEyNTdlZWFiOAAAAAsxNzIuMTYuMC4xNXVybDxodHRwOi8vZXhhbXBsZS5jb20vPjphYmMvQaAAAAAJOoAvc2t1LTEyMw==@')
+    end
   end
 
   context 'when a target is a Card' do
