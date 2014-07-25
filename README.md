@@ -230,7 +230,7 @@ A Transaction should be Captured only when fulfillment is completed.
 
 ```ruby
 token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
-token.estimated_fulfillment_days = 3      # The token is now auth-only!
+token.estimated_fulfillment_days = 3
 email(token.to_s, receipient_address)
 ```
 
@@ -241,7 +241,7 @@ response on processing the token. It has a limit of 2500 characters.
 
 ```ruby
 token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
-token.custom_user_data = '{foo => bar}'      # The token is now auth-only!
+token.custom_user_data = 'some-value'
 email(token.to_s, receipient_address)
 ```
 
