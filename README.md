@@ -199,17 +199,19 @@ token.set_item_details = "Lorem Ipsum ..."
 email(token.to_s, receipient_address)
  ```
 
-#### Collect Address Details
 
-You can specify if what what type of addresses you would like to request on the  **Hosted Payment Capture Page**.
-You can require none, shipping_only or billing_and_shipping.
+#### Address Collection
 
- ```ruby
- token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
- token.collect_address = "shipping"      # none, shipping, billing_and_shipping
- email(token.to_s, receipient_address)
- ```
+Request the **Hosted Payment Capture Page** collect any combination
+of shipping or billing address with `requires_shipping_address=` and
+`requires_billing_address=`:
 
+```
+token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token.requires_shipping_address = true
+token.requires_billing_address  = true
+email(token.to_s, receipient_address)
+```
 
 ### Set Item Quantity
 

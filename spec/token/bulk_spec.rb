@@ -8,7 +8,7 @@ describe AtPay::Token::Bulk do
   let(:public_key)        { 'qIcshFT1NEh2JWPEp7+wVV8ibUFHKNew5apbNLGVqgI=' }
   let(:atpay_public_key)  { 'DjnbXwK20VZpir+RLWsrLVwUinAkdeAmvla4M509GXQ=' }
   let(:atpay_private_key) { 'sS70ekGtxHIlzDhcogTECaJyjGJAzHUpVzM/d/M2ixA=' }
- 
+
   let(:session)   { AtPay::Session.new(partner_id, public_key, private_key) }
   let(:amount)    { 20.0 }
   let(:url)       { 'http://example.com/' }

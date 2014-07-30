@@ -27,7 +27,7 @@ module AtPay
           email_address
         else
           @email_address
-        end 
+        end
       end
 
       def name=(name)
@@ -52,14 +52,20 @@ module AtPay
         self.user_data.fulfillment = days
       end
 
-      def collect_address=(address)
-        if address == "shipping_only"
-          self.user_data = "ship"
-        elsif address == "billing_and_shipping"
-          self.user_data = "both"
-        else
-          self.user_data == address
-        end
+      def requires_shipping_address?
+        address_options.include?('shipping')
+      end
+
+      def requires_shipping_address=(v)
+        v ? add_address_option('shipping') : remove_address_option('shipping')
+      end
+
+      def requires_billing_address?
+        address_options.include?('billing')
+      end
+
+      def requires_billing_address=(v)
+        v ? add_address_option('billing') : remove_address_option('billing')
       end
 
       def custom_user_data=(str)
@@ -92,6 +98,22 @@ module AtPay
       end
 
       private
+      def address_options
+        self.user_data.address.split(',')
+      rescue
+        []
+      end
+
+      def remove_address_option(address_option)
+        options = (address_options - [address_option])
+        self.user_data.address = options.uniq.join(',')
+      end
+
+      def add_address_option(address_option)
+        options = (address_options << address_option)
+        self.user_data.address = options.uniq.join(',')
+      end
+
       def encoded_user_data
         MultiJson.dump(user_data.to_h)
       end
