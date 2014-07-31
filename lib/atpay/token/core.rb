@@ -39,7 +39,7 @@ module AtPay
       end
 
       def url=(url)
-        self.user_data.url = url
+        self.user_data.signup_url = url
         @url = url
       end
 
