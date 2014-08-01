@@ -72,11 +72,11 @@ module AtPay
         self.user_data.custom_user_data = str
       end
 
-      def set_item_details=(item_details)
+      def item_details=(item_details)
         self.user_data.item_details = item_details
       end
 
-      def set_item_quantity=(qty)
+      def item_quantity=(qty)
         self.user_data.quantity = qty
       end
 

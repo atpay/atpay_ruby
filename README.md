@@ -195,7 +195,7 @@ You can set an **item details** that will display on the **Hosted Payment Captur
 
 ```ruby
 token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
-token.set_item_details = "Lorem Ipsum ..."
+token.item_details = "Lorem Ipsum ..."
 email(token.to_s, receipient_address)
  ```
 
@@ -219,7 +219,7 @@ If you are using @Pay's webhook for inventory control, you can specify an initia
 
 ```ruby
 token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
-token.set_item_quantity = 3
+token.item_quantity = 3
 email(token.to_s, receipient_address)
  ```
 
