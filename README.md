@@ -172,6 +172,9 @@ registration.url
 
 registration.short
 => "atpay://{token_identifier}"
+
+registration.qrcode_url
+=> "https://dashboard.atpay.com/offers/{token_identifier}.png"
 ```
 
 NOTE: For high traffic this solution may be inadequate. Contact @Pay for

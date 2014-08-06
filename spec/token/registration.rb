@@ -22,7 +22,8 @@ describe AtPay::Token::Registration do
 
     registration = AtPay::Token::Registration.new(session, 'ex-token-123')
 
-    expect(registration.short).to eq('atpay://123')
-    expect(registration.url).to eq('http://example.com/123')
+    expect(registration.short).to      eq('atpay://123')
+    expect(registration.url).to        eq('http://example.com/123')
+    expect(registration.qrcode_url).to eq('https://dashboard.atpay.com/offers/123.png')
   end
 end

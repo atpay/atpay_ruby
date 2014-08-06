@@ -12,6 +12,10 @@ module AtPay
         registration['url']
       end
 
+      def qrcode_url
+        "#{session.endpoint}/offers/#{registration['id']}.png"
+      end
+
       def id
         registration['id']
       end
