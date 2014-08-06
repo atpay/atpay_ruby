@@ -3,10 +3,10 @@ require 'multi_json'
 
 module AtPay
   class Hook
-    def initialize(session, params)
+    def initialize(session, details, signature)
       @session   = session
-      @details   = params['details']
-      @signature = params['signature']
+      @details   = details
+      @signature = signature
 
       verify_signature!
       verify_success!

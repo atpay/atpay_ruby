@@ -41,7 +41,7 @@ A sample Rails **Web Hook Endpoint**:
 # app/controllers/transactions_controller.rb
 class TransactionsController < ApplicationController
   def create
-    hook = AtPay::Hook(ATPAY_SESSION, params)
+    hook = AtPay::Hook.new(ATPAY_SESSION, params['details'], params['signature'])
     render text: hook.details.inspect
   rescue AtPay::InvalidSignatureError
     head 403
