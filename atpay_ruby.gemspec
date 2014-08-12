@@ -2,7 +2,7 @@ $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 Gem::Specification.new do |s|
   s.name          = 'atpay_ruby'
-  s.version       = '0.0.8'
+  s.version       = '0.0.9'
   s.summary       = 'Ruby bindings for the @Pay API'
   s.description   = ""
   s.authors       = ['James Kassemi', 'Isaiah Baca']
