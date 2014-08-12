@@ -59,4 +59,19 @@ describe AtPay::Token::Core do
     expect(token.requires_billing_address?).to eq(true)
     expect(token.user_data.address).to eq('billing')
   end
+
+  it 'sets auth when fulfillment time is positive' do
+    token = described_class.new
+    token.estimated_fulfillment_days = 1
+    expect(token.version).to eq(2)
+  end
+
+  it 'does not set auth_only when fulfillment time is 0 or nil' do
+    token = described_class.new
+    token.estimated_fulfillment_days = 0
+    expect(token.version).to eq(0)
+
+    token.estimated_fulfillment_days = nil
+    expect(token.version).to eq(0)
+  end
 end

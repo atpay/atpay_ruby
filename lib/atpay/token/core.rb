@@ -48,7 +48,12 @@ module AtPay
       end
 
       def estimated_fulfillment_days=(days)
-        self.auth_only!
+        if days.to_i > 0
+          self.auth_only!
+        else
+          self.capture!
+        end
+
         self.user_data.fulfillment = days
       end
 
@@ -87,6 +92,10 @@ module AtPay
 
       def auth_only!
         self.version = 2
+      end
+
+      def capture!
+        self.version = 0
       end
 
       def register!
