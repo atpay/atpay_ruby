@@ -263,6 +263,24 @@ email(button, recipient_address)
 
 Default options are [AtPay::Button::OPTIONS](lib/atpay/button.rb).
 
+## QR Code Generation
+
+NOTE: These functions require independent installation of the `qrencoder` and
+`rasem` gems.
+
+As an alternative to the standard Button presentation, a QR code can trigger an
+outgoing email on a Customer's device. To create a QR code, first create
+a button, and then use `AtPay::Button::QRCode`:
+
+```ruby
+token  = AtPay::Token::Bulk.new(session, 20.00)
+button = AtPay::Button.new(token.to_s, 20.00, 'My Company').render
+qr     = AtPay::Button::QRCode.new(button)
+
+File.write("code.png", qr.png)      # Export PNG
+File.write("code.svg", qr.svg)      # Export SVG
+```
+
 ## Command Line Usage
 
 The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
