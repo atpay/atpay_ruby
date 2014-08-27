@@ -44,7 +44,7 @@ module AtPay
       end
 
       def expires_in_seconds=(seconds)
-        self.expires = Time.now.to_i + seconds
+        self.expires = Time.now.to_i + seconds.to_i
       end
 
       def estimated_fulfillment_days=(days)
@@ -103,7 +103,7 @@ module AtPay
       end
 
       def to_s
-        AtPay::Token::Encoder.new(session, version, amount, email_address, expires.to_i, url, encoded_user_data, group).email
+        AtPay::Token::Encoder.new(session, version, amount, email_address, expires, url, encoded_user_data, group).email
       end
 
       private
