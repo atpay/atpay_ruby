@@ -103,7 +103,7 @@ module AtPay
       end
 
       def to_s
-        AtPay::Token::Encoder.new(session, version, amount, email_address, expires, url, encoded_user_data, group).email
+        AtPay::Token::Encoder.new(session, version, amount, email_address, expires.to_i, url, encoded_user_data, group).email
       end
 
       private
