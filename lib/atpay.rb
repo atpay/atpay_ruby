@@ -5,6 +5,7 @@ require 'atpay/error'
 require 'atpay/button'
 require 'atpay/token/invoice'
 require 'atpay/token/bulk'
+require 'atpay/token/targeted'
 require 'atpay/hook'
 require 'atpay/railtie' if defined?(Rails)
 require 'base64'

@@ -9,7 +9,7 @@ module AtPay
   module Token
     class Encoder < Struct.new(:session, :version, :amount, :target, :expires, :url, :user_data, :group)
       def email
-        version_and_encode(nonce, partner_frame, body_frame) 
+        version_and_encode(nonce, partner_frame, body_frame)
       end
 
       def site(remote_addr, headers)

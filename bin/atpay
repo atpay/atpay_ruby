@@ -21,6 +21,14 @@ module AtPay
         puts AtPay::Token::Invoice.new(session, options[:amount], options[:email], options[:user_data]).to_s
       end
 
+      desc 'targeted', 'Generate an targeted token'
+      option :amount, type: :numeric, required: true, desc: "Dollar amount to process"
+      option :email, type: :string, required: true, desc: "Email address expected to complete the transaction"
+      option :user_data, default: nil, desc: "Additional data to append to transaction details"
+      def targeted
+        puts AtPay::Token::Targeted.new(session, options[:amount], options[:email], options[:user_data]).to_s
+      end
+
       desc 'bulk', 'Generate a bulk token'
       option :amount, type: :numeric, required: true, desc: "Dollar amount to process"
       option :user_data, default: '', desc: "Additional data to append to transaction details"

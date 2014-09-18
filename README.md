@@ -59,8 +59,8 @@ or a product sales offer, for instance). When a **Token** is sent to
 `transaction@processor.atpay.com` from an address associated with a **Payment Method**,
 it will create a **Transaction**.
 
-There are two classes of **Token** @Pay processes - the **Invoice Token**, which should
-be used for sending invoices or transactions applicable to a single
+There are two classes of **Token** @Pay processes - the **Targeted Token**, which should
+be used for sending transactions applicable to a single
 recipient, and the **Bulk Token**, which is suitable for email marketing lists.
 
 An **Email Button** is a link embedded in an email message. When activated, this link
@@ -69,19 +69,20 @@ prefilled. By default this email contains one of the two token types. Clicking
 'Send' delivers the email to @Pay and triggers **Transaction** processing. The sender will
 receive a receipt or further instructions.
 
-## Invoice Tokens
+## Targeted Tokens
 
-An **Invoice** token is ideal for sending invoices or for transactions that are
-only applicable to a single recipient (shopping cart abandonment, specialized
-offers, etc).
+A **targeted** token is ideal for sending invoices or for transactions that are
+only applicable to a single recipient (specialized offers, etc).
 
 The following creates a token for a 20 dollar transaction specifically for the
 credit card @Pay has associated with 'test@example.com':
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 puts token.to_s
 ```
+*Note: **Targeted** tokens used to be known as **Invoice** tokens. Please use **Targeted** tokens, as **Invoice** tokens will be deprecated.*
+
 
 ## Bulk Tokens
 
@@ -114,7 +115,7 @@ simultaneously. If you're shipping a physical good, or for some other reason
 want to delay the capture, use the `auth_only!` method to adjust this behavior:
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.auth_only!
 email(token.to_s)
 ```
@@ -126,7 +127,7 @@ after the expiration results in a polite error message being sent to the sender.
 To adjust the expiration:
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.expires_in_seconds = 60 * 60 * 24 * 7 # 1 week
  ```
 
@@ -141,7 +142,7 @@ your own site (Enable @Pay Card tokenization on your own page with the
 URL:
 
 ```ruby
-token     = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token     = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.url = 'https://example.com/invoices/123'
 ```
 
@@ -164,7 +165,7 @@ when the URL is requested from @Pay prior to the first use. To request the URL, 
 must contact @Pay's server:
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 registration = token.register!
 
 registration.url
@@ -186,7 +187,7 @@ consultation.
 You can set an **item name** that will display on the **Hosted Payment Capture Page**.
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.name = "A Cool Offer"
 email(token.to_s, receipient_address)
  ```
@@ -197,7 +198,7 @@ You can set an **item details** that will display on the **Hosted Payment Captur
 
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.item_details = "Lorem Ipsum ..."
 email(token.to_s, receipient_address)
  ```
@@ -210,7 +211,7 @@ of shipping or billing address with `requires_shipping_address=` and
 `requires_billing_address=`:
 
 ```
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.requires_shipping_address = true
 token.requires_billing_address  = true
 email(token.to_s, receipient_address)
@@ -221,7 +222,7 @@ email(token.to_s, receipient_address)
 If you are using @Pay's webhook for inventory control, you can specify an initial quantity for the offer you are creating.
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.item_quantity = 3
 email(token.to_s, receipient_address)
  ```
@@ -234,7 +235,7 @@ email(token.to_s, receipient_address)
 A Transaction should be Captured only when fulfillment is completed.
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.estimated_fulfillment_days = 3
 email(token.to_s, receipient_address)
 ```
@@ -245,7 +246,7 @@ email(token.to_s, receipient_address)
 response on processing the token. It has a limit of 2500 characters.
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.custom_user_data = 'some-value'
 email(token.to_s, receipient_address)
 ```
@@ -256,7 +257,7 @@ email(token.to_s, receipient_address)
 To create a friendly button that wraps your token:
 
 ```ruby
-token = AtPay::Token::Invoice.new(session, 20.00, 'test@example.com')
+token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 button = AtPay::Button.new(token.to_s, 20.00, 'My Company', wrap: true).render
 email(button, recipient_address)
 ```
@@ -283,16 +284,16 @@ File.write("code.svg", qr.svg)      # Export SVG
 
 ## Command Line Usage
 
-The `atpay` utility generates **Invoice Tokens**, **Bulk Tokens**, and **Email Buttons**
+The `atpay` utility generates **Targeted Tokens**, **Bulk Tokens**, and **Email Buttons**
 that you can embed in outgoing email. Run `atpay help` for more details.
 
 ```bash
-$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
+$ atpay token targeted --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123
 => @...@
 
 $ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://example.com/product"
 => @...@
 
-$ atpay token invoice --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
+$ atpay token targeted --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
 => <p>...</p>
 ```
