@@ -81,7 +81,7 @@ credit card @Pay has associated with 'test@example.com':
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 puts token.to_s
 ```
-*Note: **Targeted** tokens used to be known as **Invoice** tokens. Please use **Targeted** tokens, as **Invoice** tokens will be deprecated.*
+Note: **Targeted** tokens used to be known as **Invoice** tokens. Please use **Targeted** tokens, as **Invoice** tokens will be deprecated.
 
 
 ## Bulk Tokens
