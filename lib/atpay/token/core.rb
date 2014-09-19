@@ -65,12 +65,20 @@ module AtPay
         v ? add_address_option('shipping') : remove_address_option('shipping')
       end
 
+      def shipping_address=(shipping_address)
+        self.user_data.shipping_address = shipping_address
+      end
+
       def requires_billing_address?
         address_options.include?('billing')
       end
 
       def requires_billing_address=(v)
         v ? add_address_option('billing') : remove_address_option('billing')
+      end
+
+      def billing_address=(billing_address)
+        self.user_data.billing_address = billing_address
       end
 
       def custom_user_data=(str)
