@@ -48,7 +48,7 @@ module AtPay
       end
 
       def crypted_frame
-        [target_tag, options_group, '/', options_frame, '/', user_data].flatten.compact.join
+        [target_tag, options_group, '/', options_frame.force_encoding('ASCII-8BIT'), '/', user_data.force_encoding('ASCII-8BIT')].flatten.compact.join
       end
 
       def options_frame
