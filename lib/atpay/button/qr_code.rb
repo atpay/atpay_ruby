@@ -9,11 +9,11 @@ class AtPay::Button::QRCode
   attr_reader :qr
 
   def initialize(button)
-    content = CGI.unescape(button.default_mailto)
+    content = CGI.unescape("http://rrfb.atpay.com")
     @qr     = QREncoder.encode(content, correction: :low)
   end
 
-  def png(pixels_per_module=6)
+  def png(pixels_per_module=12)
     @qr.png(pixels_per_module: pixels_per_module).to_blob
   end
 
