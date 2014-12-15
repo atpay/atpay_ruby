@@ -11,23 +11,24 @@ module AtPay
       background_color:   '#6dbe45',
       foreground_color:   '#ffffff',
       image:              'https://www.atpay.com/wp-content/themes/atpay/images/bttn_cart.png',
-      processor:          ENV['ATPAY_PAYMENT_ADDRESS'] || 'payment@transaction-l4.atpay.com',
+      processor:          ENV['ATPAY_PAYMENT_ADDRESS'] || 'payments.atpay.com',
       templates:          File.join(File.dirname(__FILE__), '..', '..', 'assets', 'button', 'templates'),
       analytic_url:       nil,
       wrap:               false,
       wrap_text:          'Made for Mobile'
     }
 
-    def initialize(token, amount, merchant_name, options={})
-      @token = token
-      @amount = amount
-      @merchant_name = merchant_name
-      @options = OPTIONS.merge(options)
-      @options[:image] = nil if @options[:image] == ''
+    def initialize(token, short_token, amount, merchant_name, options={})
+      @token            = token
+      @short_token      = short_token
+      @amount           = amount
+      @merchant_name    = merchant_name
+      @options          = OPTIONS.merge(options)
+      @options[:image]  = nil if @options[:image] == ''
     end
 
     def default_mailto
-      "mailto:#{@options[:processor]}?subject=#{mailto_subject}&body=#{mailto_body}"
+      "mailto:#{mailto_processor}?subject=#{mailto_subject}&body=#{mailto_body}"
     end
 
     def render(args={})
@@ -70,15 +71,15 @@ module AtPay
     end
 
     def mailto_subject
-      URI.encode(@options[:subject])
+      URI.encode("Press send to pay #{amount}.")
     end
 
     def yahoo_mailto
-      "http://compose.mail.yahoo.com/?to=#{@options[:processor]}&subject=#{mailto_subject}&body=#{mailto_body}"
+      "http://compose.mail.yahoo.com/?to=#{mailto_processor}&subject=#{mailto_subject}&body=#{mailto_body}"
     end
 
     def outlook_mailto
-      "https://www.hotmail.com/secure/start?action=compose&to=#{@options[:processor]}&subject=#{mailto_subject}&body=#{mailto_body}"
+      "https://www.hotmail.com/secure/start?action=compose&to=#{mailto_processor}&subject=#{mailto_subject}&body=#{mailto_body}"
     end
 
     # Load the mailto body template from the specified location
@@ -86,17 +87,18 @@ module AtPay
       Liquid::Template.parse(File.read(File.join(@options[:templates], "mailto_body.liquid")))
     end
 
+    def mailto_processor
+      "payment-id-#{@short_token}@#{@options[:processor]}"
+    end
+
     # Parse the mailto body, this is where we inject the token, merchant_name and amount values we received in
     # the options.
     #
     # @return [String]
     def mailto_body
-      part_a = URI.encode(mailto_body_template.render({
+      URI.encode(mailto_body_template.render({
         'amount' => amount,
         'merchant_name' => @merchant_name}))
-      part_b = CGI.escape(token)
-      part_z = "#{part_a}%0A%0A#{part_b}"
-      return part_z
     end
 
     # This is processed as liquid - in the future we can allow overwriting the
