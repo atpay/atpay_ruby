@@ -79,7 +79,16 @@ credit card @Pay has associated with 'test@example.com':
 
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
-puts token.to_s
+registration = token.register!
+
+registration.url
+=> "https://example.secured.atpay.com/{token_identifier}"
+
+registration.short
+=> "atpay://{token_identifier}"
+
+registration.qrcode_url
+=> "https://dashboard.atpay.com/offers/{token_identifier}.png"
 ```
 Note: **Targeted** tokens used to be known as **Invoice** tokens. Please use **Targeted** tokens, as **Invoice** tokens will be deprecated.
 
@@ -99,6 +108,7 @@ To create a **Bulk Token** for a 30 dollar offer:
 
 ```ruby
 token = AtPay::Token::Bulk.new(session, 30.00)
+registration = token.register!
 ```
 
 If a recipient of this token attempts to purchase the product via email but
