@@ -167,31 +167,6 @@ token     = AtPay::Token::Bulk.new(session, 20.00)
 token.request_custom_data!('gift_message', required: false)
 ```
 
-#### Requesting the URL of a Hosted Signup Page
-
-The **Hosted Payment Capture Page** is related directly to a Token. It is
-created when the token is first received at `transaction@processor.atpay.com` or
-when the URL is requested from @Pay prior to the first use. To request the URL, you
-must contact @Pay's server:
-
-```ruby
-token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
-registration = token.register!
-
-registration.url
-=> "https://example.secured.atpay.com/{token_identifier}"
-
-registration.short
-=> "atpay://{token_identifier}"
-
-registration.qrcode_url
-=> "https://dashboard.atpay.com/offers/{token_identifier}.png"
-```
-
-NOTE: For high traffic this solution may be inadequate. Contact @Pay for
-consultation.
-
-
 #### Item Name
 
 You can set an **item name** that will display on the **Hosted Payment Capture Page**.
