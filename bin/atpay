@@ -49,7 +49,7 @@ module AtPay
       option :merchant, type: :string, required: true, desc: "Merchant name"
       def generic
         token = $stdin.read
-        puts AtPay::Button.new(token, options[:amount], options[:merchant]).render
+        puts AtPay::Button.new(token, token, options[:amount], options[:merchant]).render
       end
     end
 

@@ -266,7 +266,7 @@ File.write("code.png", qr.png)      # Export PNG
 File.write("code.svg", qr.svg)      # Export SVG
 ```
 
-## Command Line Usage
+<!-- ## Command Line Usage
 
 The `atpay` utility generates **Targeted Tokens**, **Bulk Tokens**, and **Email Buttons**
 that you can embed in outgoing email. Run `atpay help` for more details.
@@ -280,4 +280,4 @@ $ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://e
 
 $ atpay token targeted --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
 => <p>...</p>
-```
+``` -->
