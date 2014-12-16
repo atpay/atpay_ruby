@@ -2,11 +2,11 @@ $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 Gem::Specification.new do |s|
   s.name          = 'atpay_ruby'
-  s.version       = '0.0.15'
+  s.version       = '0.0.16'
   s.summary       = 'Ruby bindings for the @Pay API'
   s.description   = ""
-  s.authors       = ['James Kassemi', 'Isaiah Baca']
-  s.email         = ['james@atpay.com', 'isaiah@atpay.com']
+  s.authors       = ['James Kassemi', 'Isaiah Baca', 'Tyler Thompson']
+  s.email         = ['james@atpay.com', 'isaiah@atpay.com', 'tyler@atpay.com']
   s.homepage      = 'https://atpay.com'
   s.license       = 'MIT'
 

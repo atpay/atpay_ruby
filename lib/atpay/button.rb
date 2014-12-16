@@ -71,7 +71,7 @@ module AtPay
     end
 
     def mailto_subject
-      URI.encode("Press send to pay #{amount}.")
+      URI.encode("Press send to pay #{amount} to #{@merchant_name} ")
     end
 
     def yahoo_mailto
