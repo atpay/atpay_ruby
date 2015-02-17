@@ -2,7 +2,7 @@ $:.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 Gem::Specification.new do |s|
   s.name          = 'atpay_ruby'
-  s.version       = '0.0.15'
+  s.version       = '0.0.2'
   s.summary       = 'Ruby bindings for the @Pay API'
   s.description   = ""
   s.authors       = ['James Kassemi', 'Isaiah Baca']
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('rbnacl-libsodium', '~> 0.6.0')
   s.add_runtime_dependency('trollop', '~> 2.0')
   s.add_runtime_dependency('liquid', '~> 2.6.1')
-  s.add_runtime_dependency('thor', '~> 0.18.1')
+  s.add_runtime_dependency('thor', '~> 0.19')
   s.add_runtime_dependency('httpi')
   s.add_runtime_dependency('multi_json')
 
