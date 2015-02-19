@@ -79,7 +79,19 @@ credit card @Pay has associated with 'test@example.com':
 
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
-puts token.to_s
+registration = token.register!
+
+registration.url
+=> "https://example.secured.atpay.com/{token_identifier}"
+
+registration.short
+=> "atpay://{token_identifier}"
+
+registration.id
+=> "{token_identifier}"
+
+registration.qrcode_url
+=> "https://dashboard.atpay.com/offers/{token_identifier}.png"
 ```
 Note: **Targeted** tokens used to be known as **Invoice** tokens. Please use **Targeted** tokens, as **Invoice** tokens will be deprecated.
 
@@ -99,6 +111,7 @@ To create a **Bulk Token** for a 30 dollar offer:
 
 ```ruby
 token = AtPay::Token::Bulk.new(session, 30.00)
+registration = token.register!
 ```
 
 If a recipient of this token attempts to purchase the product via email but
@@ -107,6 +120,8 @@ complete their transaction. You should integrate [@PayJS](http://developer.atpay
 on that page to enable Customers' two-click email transactions in the future.
 
 ## General Token Attributes
+
+These attributes have to be set before calling the register function on the token.
 
 ### Auth Only
 
@@ -117,7 +132,6 @@ want to delay the capture, use the `auth_only!` method to adjust this behavior:
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.auth_only!
-email(token.to_s)
 ```
 
 ### Expiration
@@ -157,31 +171,6 @@ token     = AtPay::Token::Bulk.new(session, 20.00)
 token.request_custom_data!('gift_message', required: false)
 ```
 
-#### Requesting the URL of a Hosted Signup Page
-
-The **Hosted Payment Capture Page** is related directly to a Token. It is
-created when the token is first received at `transaction@processor.atpay.com` or
-when the URL is requested from @Pay prior to the first use. To request the URL, you
-must contact @Pay's server:
-
-```ruby
-token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
-registration = token.register!
-
-registration.url
-=> "https://example.secured.atpay.com/{token_identifier}"
-
-registration.short
-=> "atpay://{token_identifier}"
-
-registration.qrcode_url
-=> "https://dashboard.atpay.com/offers/{token_identifier}.png"
-```
-
-NOTE: For high traffic this solution may be inadequate. Contact @Pay for
-consultation.
-
-
 #### Item Name
 
 You can set an **item name** that will display on the **Hosted Payment Capture Page**.
@@ -189,7 +178,6 @@ You can set an **item name** that will display on the **Hosted Payment Capture P
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.name = "A Cool Offer"
-email(token.to_s, receipient_address)
  ```
 
 #### Item Details
@@ -200,7 +188,6 @@ You can set an **item details** that will display on the **Hosted Payment Captur
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.item_details = "Lorem Ipsum ..."
-email(token.to_s, receipient_address)
  ```
 
 
@@ -214,7 +201,6 @@ of shipping or billing address with `requires_shipping_address=` and
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.requires_shipping_address = true
 token.requires_billing_address  = true
-email(token.to_s, receipient_address)
 ```
 
 ### Set Item Quantity
@@ -224,7 +210,6 @@ If you are using @Pay's webhook for inventory control, you can specify an initia
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.item_quantity = 3
-email(token.to_s, receipient_address)
  ```
 
 
@@ -237,7 +222,6 @@ A Transaction should be Captured only when fulfillment is completed.
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.estimated_fulfillment_days = 3
-email(token.to_s, receipient_address)
 ```
 
 ### Custom User Data
@@ -248,7 +232,6 @@ response on processing the token. It has a limit of 2500 characters.
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
 token.custom_user_data = 'some-value'
-email(token.to_s, receipient_address)
 ```
 
 
@@ -258,7 +241,8 @@ To create a friendly button that wraps your token:
 
 ```ruby
 token = AtPay::Token::Targeted.new(session, 20.00, 'test@example.com')
-button = AtPay::Button.new(token.to_s, 20.00, 'My Company', wrap: true).render
+registration = token.register!
+button = AtPay::Button.new(registration.short, registration.id, 20.00, 'My Company', wrap: true).render
 email(button, recipient_address)
 ```
 
@@ -282,7 +266,7 @@ File.write("code.png", qr.png)      # Export PNG
 File.write("code.svg", qr.svg)      # Export SVG
 ```
 
-## Command Line Usage
+<!-- ## Command Line Usage
 
 The `atpay` utility generates **Targeted Tokens**, **Bulk Tokens**, and **Email Buttons**
 that you can embed in outgoing email. Run `atpay help` for more details.
@@ -296,4 +280,4 @@ $ atpay token bulk --partner_id=X --private-key=X --amount=20.55 --url="http://e
 
 $ atpay token targeted --partner_id=X --private_key=X --amount=20.55 --target=test@example.com --user-data=sku-123 | atpay button generic --amount=20.55 --merchant="Mom's"
 => <p>...</p>
-```
+``` -->
