@@ -40,7 +40,11 @@ module AtPay
       end
 
       def partner_frame
-        [session.partner_id].pack("Q>")
+        if session.partner_id.is_a? Integer
+          [session.partner_id].pack("Q>")
+        else
+          "org"+Base64.urlsafe_encode64(session.partner_id)+"org"
+        end
       end
 
       def body_frame
