@@ -31,6 +31,11 @@ module AtPay
       "mailto:#{mailto_processor}?subject=#{mailto_subject}&body=#{mailto_body}"
     end
 
+    # mailto link with language specific to non-profits (rather than to ecommerce)
+    def non_profit_mailto
+      "mailto:#{mailto_processor}?subject=#{non_profit_mailto_subject}&body=#{non_profit_mailto_body}"
+    end
+
     def render(args={})
       @options.update args
 
@@ -74,6 +79,12 @@ module AtPay
       URI.encode("Press send to pay #{amount} to #{@merchant_name} ")
     end
 
+    # mailto subject with language specific to non-profits
+    def non_profit_mailto_subject
+      # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
+      URI.encode("Press send to give #{amount} to #{@merchant_name} ")
+    end
+
     def yahoo_mailto
       "http://compose.mail.yahoo.com/?to=#{mailto_processor}&subject=#{mailto_subject}&body=#{mailto_body}"
     end
@@ -87,6 +98,11 @@ module AtPay
       Liquid::Template.parse(File.read(File.join(@options[:templates], "mailto_body.liquid")))
     end
 
+    # load the mailto body template specific to non-profits.
+    def non_profit_mailto_body_template
+      Liquid::Template.parse(File.read(File.join(@options[:templates], "non_profit_mailto_body.liquid")))
+    end
+
     def mailto_processor
       "payment-id-#{@short_token}@#{@options[:processor]}"
     end
@@ -97,6 +113,13 @@ module AtPay
     # @return [String]
     def mailto_body
       URI.encode(mailto_body_template.render({
+        'amount' => amount,
+        'merchant_name' => @merchant_name}))
+    end
+
+    # mailto body that's created from a template specific to non-profits
+    def non_profit_mailto_body
+      URI.encode(non_profit_mailto_body_template.render({
         'amount' => amount,
         'merchant_name' => @merchant_name}))
     end
