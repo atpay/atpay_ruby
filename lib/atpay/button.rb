@@ -15,7 +15,8 @@ module AtPay
       templates:          File.join(File.dirname(__FILE__), '..', '..', 'assets', 'button', 'templates'),
       analytic_url:       nil,
       wrap:               false,
-      wrap_text:          'Made for Mobile'
+      wrap_text:          'Made for Mobile',
+      is_non_profit:      false
     }
 
     def initialize(token, short_token, amount, merchant_name, options={})
@@ -25,15 +26,11 @@ module AtPay
       @merchant_name    = merchant_name
       @options          = OPTIONS.merge(options)
       @options[:image]  = nil if @options[:image] == ''
+      @is_non_profit    = @options[:is_non_profit]
     end
 
     def default_mailto
       "mailto:#{mailto_processor}?subject=#{mailto_subject}&body=#{mailto_body}"
-    end
-
-    # mailto link with language specific to non-profits (rather than to ecommerce)
-    def non_profit_mailto
-      "mailto:#{mailto_processor}?subject=#{non_profit_mailto_subject}&body=#{non_profit_mailto_body}"
     end
 
     def render(args={})
@@ -76,13 +73,12 @@ module AtPay
     end
 
     def mailto_subject
-      URI.encode("Press send to pay #{amount} to #{@merchant_name} ")
-    end
-
-    # mailto subject with language specific to non-profits
-    def non_profit_mailto_subject
-      # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
-      URI.encode("Press send to give #{amount} to #{@merchant_name} ")
+      if @is_non_profit
+        # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
+        URI.encode("Press send to give #{amount} to #{@merchant_name} ")
+      else
+        URI.encode("Press send to pay #{amount} to #{@merchant_name} ")
+      end
     end
 
     def yahoo_mailto
@@ -95,12 +91,11 @@ module AtPay
 
     # Load the mailto body template from the specified location
     def mailto_body_template
-      Liquid::Template.parse(File.read(File.join(@options[:templates], "mailto_body.liquid")))
-    end
-
-    # load the mailto body template specific to non-profits.
-    def non_profit_mailto_body_template
-      Liquid::Template.parse(File.read(File.join(@options[:templates], "non_profit_mailto_body.liquid")))
+      if @is_non_profit
+        Liquid::Template.parse(File.read(File.join(@options[:templates], "non_profit_mailto_body.liquid")))
+      else 
+        Liquid::Template.parse(File.read(File.join(@options[:templates], "mailto_body.liquid")))
+      end
     end
 
     def mailto_processor
@@ -113,13 +108,6 @@ module AtPay
     # @return [String]
     def mailto_body
       URI.encode(mailto_body_template.render({
-        'amount' => amount,
-        'merchant_name' => @merchant_name}))
-    end
-
-    # mailto body that's created from a template specific to non-profits
-    def non_profit_mailto_body
-      URI.encode(non_profit_mailto_body_template.render({
         'amount' => amount,
         'merchant_name' => @merchant_name}))
     end
