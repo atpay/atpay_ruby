@@ -16,7 +16,8 @@ module AtPay
       analytic_url:       nil,
       wrap:               false,
       wrap_text:          'Made for Mobile',
-      is_non_profit:      false
+      is_non_profit:      false, 
+      locale:             :en
     }
 
     def initialize(token, short_token, amount, merchant_name, options={})
@@ -27,6 +28,7 @@ module AtPay
       @options          = OPTIONS.merge(options)
       @options[:image]  = nil if @options[:image] == ''
       @is_non_profit    = @options[:is_non_profit]
+      @locale           = @options[:locale].to_sym
     end
 
     def default_mailto
@@ -74,8 +76,12 @@ module AtPay
 
     def mailto_subject
       if @is_non_profit
-        # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
-        URI.encode("Press send to give #{amount} to #{@merchant_name} ")
+        if @locale == :es
+          URI.encode("Por favor envíe a dar #{amount} a #{@merchant_name} ")
+        else
+          # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
+          URI.encode("Press send to give #{amount} to #{@merchant_name} ")
+        end
       else
         URI.encode("Press send to pay #{amount} to #{@merchant_name} ")
       end
@@ -92,7 +98,11 @@ module AtPay
     # Load the mailto body template from the specified location
     def mailto_body_template
       if @is_non_profit
-        Liquid::Template.parse(File.read(File.join(@options[:templates], "non_profit_mailto_body.liquid")))
+        if @locale == :es
+          Liquid::Template.parse(File.read(File.join(@options[:templates], "spanish_non_profit_mailto_body.liquid")))
+        else
+          Liquid::Template.parse(File.read(File.join(@options[:templates], "non_profit_mailto_body.liquid")))
+        end
       else 
         Liquid::Template.parse(File.read(File.join(@options[:templates], "mailto_body.liquid")))
       end
