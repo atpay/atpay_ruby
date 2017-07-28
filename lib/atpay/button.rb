@@ -27,7 +27,8 @@ module AtPay
       @merchant_name    = merchant_name
       @options          = OPTIONS.merge(options)
       @options[:image]  = nil if @options[:image] == ''
-      @mailto_template  = @options[:mailto_template]
+      @options[:mailto_template] ||= 'pay'
+      @mailto_template  = @options[:mailto_template].to_sym
       @locale           = @options[:locale].to_sym
     end
 
