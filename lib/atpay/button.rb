@@ -10,13 +10,8 @@ module AtPay
       title:              'Pay',
       background_color:   '#6dbe45',
       foreground_color:   '#ffffff',
-      image:              'https://www.atpay.com/wp-content/themes/atpay/images/bttn_cart.png',
       processor:          ENV['ATPAY_PAYMENT_ADDRESS'] || 'payments.atpay.com',
       templates:          File.join(File.dirname(__FILE__), '..', '..', 'assets', 'button', 'templates'),
-      analytic_url:       nil,
-      wrap:               false,
-      wrap_text:          'Made for Mobile',
-      is_non_profit:      false, 
       locale:             :en
     }
 
@@ -44,8 +39,7 @@ module AtPay
         'outlook_url'  => outlook_mailto,
         'yahoo_url'    => yahoo_mailto,
         'content'      => amount,
-        'dollar'       => amount.match(/\$\d+(?=\.)/).to_s,
-        'cents'        => ".#{amount.match(/(?<=\.)[^.]*/).to_s}",
+        'amount'      => amount
       }.update(string_hash @options))
     end
 
@@ -140,14 +134,7 @@ module AtPay
     end
 
     def template_name
-      wrap_prefix = @options[:wrap] ? "wrap_" : ""
-
-      case provider
-        when :yahoo
-          "#{wrap_prefix}yahoo.liquid"
-        when :default
-          "#{wrap_prefix}default.liquid"
-      end
+      "default.liquid"
     end
 
     # Determine which template to load based on the domain of the email address.
