@@ -39,11 +39,26 @@ module AtPay
         'outlook_url'  => outlook_mailto,
         'yahoo_url'    => yahoo_mailto,
         'content'      => amount,
-        'amount'      => amount
+        'amount'       => amount,
+        'button_text'  => button_text
       }.update(string_hash @options))
     end
 
     private
+
+    def button_text
+      case @mailto_template
+      when :donate
+        'Instant Donate'
+      when :pay
+        'Instant Pay'
+      when :buy
+        'Instant Buy'
+      when :give
+        'Instant Give'
+      end
+    end
+
     def amount
       "$%.2f" % @amount.to_f
     end
