@@ -132,7 +132,8 @@ module AtPay
       end
 
       def encoded_user_data
-        MultiJson.dump(user_data.to_h)
+        safe_data = user_data.to_h.reject { |_, v| v.is_a?(Proc) }
+        MultiJson.dump(safe_data)
       end
     end
   end
