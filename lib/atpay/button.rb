@@ -88,17 +88,17 @@ module AtPay
       case @mailto_template
       when :donate
         if @locale == :es
-          URI.encode("Por favor envíe a dar #{amount} a #{@merchant_name} ")
+          CGI.escape("Por favor envíe a dar #{amount} a #{@merchant_name} ")
         else
           # not sure if that trailing space is significant or not. was in the original version (#mailto_subject), so I kept it.
-          URI.encode("Send This Message To Complete Your Donation of #{amount} ")
+          CGI.escape("Send This Message To Complete Your Donation of #{amount} ")
         end
       when :pay
-        URI.encode("Send This Message To Complete Your Payment of #{amount} ")
+        CGI.escape("Send This Message To Complete Your Payment of #{amount} ")
       when :buy
-        URI.encode("Send This Message To Complete Your Purchase of #{amount} ")
+        CGI.escape("Send This Message To Complete Your Purchase of #{amount} ")
       when :give
-        URI.encode("Send This Message To Complete Your Offering of #{amount} ")
+        CGI.escape("Send This Message To Complete Your Offering of #{amount} ")
       end
     end
 
@@ -137,7 +137,7 @@ module AtPay
     #
     # @return [String]
     def mailto_body
-      URI.encode(mailto_body_template.render({
+      CGI.escape(mailto_body_template.render({
         'amount' => amount,
         'merchant_name' => @merchant_name}))
     end
