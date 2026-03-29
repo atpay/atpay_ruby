@@ -10,10 +10,9 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://atpay.com'
   s.license       = 'MIT'
 
-  s.add_runtime_dependency('rbnacl-libsodium', '~> 0.6.0')
-  s.add_runtime_dependency('trollop', '~> 2.0')
-  s.add_runtime_dependency('liquid', '~> 2.6.1')
-  s.add_runtime_dependency('thor', '~> 0.18.1')
+  s.add_runtime_dependency('rbnacl', '>= 3.0')
+  s.add_runtime_dependency('liquid', '>= 2.6')
+  s.add_runtime_dependency('thor', '>= 0.18')
   s.add_runtime_dependency('httpi')
   s.add_runtime_dependency('multi_json')
 
